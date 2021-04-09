@@ -1,0 +1,140 @@
+.inputBox{
+    width: 100%;
+}
+
+.customLabel{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.SecondryBtn,.primaryBtn:hover{
+    outline: none;
+    padding: 5px 20px;
+    color: #111;
+    background-color: white;
+    border: 1px solid #666;
+}
+.primaryBtn,.SecondryBtn:hover{
+    outline: none;
+    padding: 5px 20px;
+    color: #fff;
+    background-color: #666;
+    border: 1px solid #666;
+}
+.primaryBtn:disabled,.SecondryBtn:disabled{
+    cursor: not-allowed;
+    pointer-events: none;
+}
+.primaryBtn,.SecondryBtn{
+    position: relative;
+}
+.loadingPadText{
+    opacity: 0;
+}
+.loadingPad{
+    width: fit-content;
+    top: 23% !important;
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+
+.tagClose{
+    background: url(data:image/gif;base64,R0lGODlhBwAVAPcAAAAAAB1FbyBLeSBMeyJOfWxsbG5ubnJycnZ2dnp6en19fX5+fiJQgCNQgSNRhCVThCRThiZViCdWiCdXiydYjitUgCxWgypbjydZkSddlyxelDJfkDVmmTRqozZspjdvrDpsoz5yqj13tEZ9unyVsX+cuUqDwoWFhYmJiYqKio2NjY6Ojo+Pj5KSkpOTk5SUlJaWlpeXl5iYmJqampubm52dnZ+fn6CgoKGhoaSkpKenp6ioqLa2tr+/v4WjxIyv1cfHxwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAAAHABUAAAh7AIHk+EcQRg8cO2L8W2HjxD8XN2rMUEDwHw0ULyqmgNGCBYKFMhL8M6DiAI8FFQvoIFGh4oYSFgI8+HdhAIh/EgQQaNChIoMMESpqgDCBwod/HBx4+CcCwwgfISqa+CGwokGEChk6hCiRIsGLGQlu7PhxRciRJU+m1BEQADs=);
+    display: block;
+    font-size: 1px;
+    height: 7px;
+    position: absolute;
+    right: 6px;
+    top: 12px;
+    width: 7px;
+}
+.tagCloseclass{
+    margin-left: 5px;
+    padding: 5px 10px;
+    background-color: #ddd;
+
+    //color: #777777;
+    cursor: pointer;
+    display: block;
+    float: left;
+    line-height: 1;
+    list-style-type: none;
+    //margin: 2px 10px 2px 0;
+    max-width: 450px;
+    padding: 8px 18px 8px 5px;
+    position: relative;
+    text-decoration: none;
+    word-wrap: break-word;
+}
+.tagClass{
+    margin-left: 5px;
+    padding: 5px 10px;
+    background-color: #ddd;
+    cursor: pointer;
+}
+.tagActive{
+    background-color: #333;
+    color: #fff;
+}
+.disFlex{
+    display: flex !important;
+}
+.textCenter{
+    text-align: center !important;
+}
+
+.badge .MuiBadge-badge{
+    color: #111;
+    background-color: #fff;
+}
+
+.cartListCon{
+    position: relative;
+    min-width: 300px;
+    .CartList{
+        height: 400px;
+        overflow-y: auto;
+        padding: 10px;
+        .CartList2{
+            margin-top: 20px;
+        }
+        .proName{
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .price{
+            color: #333;
+        }
+        .close{
+            padding-top: 5px;
+        }
+    }
+    .cartfooter{
+        width: 100%;
+        background-color: #222;
+        padding: 10px;
+        color: #fff;
+        cursor: pointer;
+       /*  position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0; */
+        .total{
+            font-size: 17px;
+            font-weight: 600;
+            float: right;
+        }
+    }
+}
+
+.MobileCart{
+    position: absolute;
+    right: 90px;
+    top: 8px;
+    color: #fff;
+}

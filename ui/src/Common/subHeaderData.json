@@ -1,0 +1,55 @@
+{
+    "Admin":[
+        {
+          "id":"dashboard",
+          "name":"Dashboard",
+          "url":"/Dashboard"
+        },
+        {
+          "id":"product",
+          "name":"Product",
+          "url":"/AddProduct",
+          "subHeader":[
+            {
+              "id":"addProduct",
+              "name":"Add Product",
+              "url":"/AddProduct"
+            },
+            {
+              "id":"viewProduct",
+              "name":"View Product",
+              "url":"/ViewProduct"
+            },
+            {
+              "id":"Manage_Attributes",
+              "name":"Manage Attributes",
+              "url":"/Attributes"
+            }
+          ]
+        },
+        {
+          "id":"user",
+          "name":"User",
+          "url":"/ViewUser",
+          "subHeader":[
+            {
+              "id":"addUser",
+              "name":"Add User",
+              "url":"/AddUser"
+            },
+            {
+              "id":"viewUser",
+              "name":"View User",
+              "url":"/ViewUser"
+            }
+          ]
+        }
+      ],
+      "User":[
+        {
+          "id":"dashboard",
+          "name":"Dashboard",
+          "url":"/Dashboard"
+        }
+      ]
+}

@@ -1,0 +1,32 @@
+.login{
+    display: inline-block;
+    padding: 55px;
+    text-align: left;
+    background-color: #fff;
+}
+@media only screen and (max-width: 480px) {
+    .login{
+        padding:30px
+    }
+  }
+.loginBtn{
+    width: 100%;
+    background-image: linear-gradient(to bottom right, rgb(2, 82, 255), rgb(2, 255, 255));
+    //background-color: rgb(9, 136, 255);
+    color: #fff;
+    border: 1px solid  #fff;
+}
+
+.Loginfullpage{
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    overflow-y: auto;
+    background-image: linear-gradient(to bottom right, rgb(2, 82, 255), rgb(2, 255, 255));
+}
+
+.loginCaption{
+    font-size: 25px;
+}

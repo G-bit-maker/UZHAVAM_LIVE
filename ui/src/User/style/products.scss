@@ -1,0 +1,95 @@
+.proCon:hover{
+    box-shadow: 0px 0px 30px -11px #aaa;
+    cursor: pointer;
+}
+.proCon{
+    flex-wrap: wrap;
+    display: flex;
+    padding:15px;
+    margin: 10px 0;
+    .proName{
+        font-size: 18px;
+        margin-top: 20px;
+    }
+    .offer{
+        font-size: 15px;
+        color:#02b3ff
+    }
+    .imgp{
+        height: 200px;
+        text-align: center;
+    }
+    .img{
+        max-width: 100%;
+        height: 100%;
+    }
+    .Addbtn{
+        margin: 10px;
+        background-image: linear-gradient(to bottom right, #0252ff, #02ffff);
+    }
+    button{
+        width: 100%;
+        outline: none;
+    }
+    .proPrice1{
+        color: #666;
+        text-decoration: line-through;
+    }
+    .proPrice{
+        font-size: 23px;
+    }
+    .rateUserCount{
+        position: absolute;
+        color: #666;
+        font-size: 14px;
+        margin-top: -2px;
+    }
+    .addCartbtn{
+        border: 1px solid #d7d7d7;
+        //padding: 10px;
+        text-align: center;
+        background-color: #fff;
+        //color: #fff;
+        .count{
+            font-weight: 600;
+            padding: 6px;
+        }
+        
+        .add,.remove{
+            min-width: 0;
+            //position: absolute;
+            padding: 8px;
+        }
+       /*  .add{
+            right:0
+        }
+        .remove{
+            left:0
+        } */
+    }
+}
+
+
+@media only screen and (max-width: 480px) {
+    .proCon .proName{
+        margin-top: 0;
+    }
+    .mobileImgD{
+        padding-right: 10px !important;
+        padding-bottom: 10px;
+    }
+  }
+
+  .orderCon{
+      border: 1px solid #aaa;
+      margin-bottom: 30px;
+  }
+  .borderLeft{
+      border-left: 1px solid #aaa;
+  }
+  .orderImg{
+      padding-top: 5px;
+  }
+  .orderName{
+      padding-bottom:10px
+  }
