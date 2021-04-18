@@ -33,3 +33,12 @@
         opacity: 0;
     }
 }
+
+.priviewTable{
+    overflow-x: auto;
+    padding: 0;
+    table{
+        width: 150%;
+        margin-bottom: 0;
+    }
+}

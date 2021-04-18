@@ -22,8 +22,8 @@ function Profile(props) {
     email:"",
     mobile:"",
     gender:"Male",
-    address1:"",
-    address2:""
+    pincode:"",
+    name:""
   })
 
   const onChange=(e)=>{
@@ -63,7 +63,8 @@ function Profile(props) {
                 <Col xs={12} sm={12} md={12} lg={12} className={"adjustRow disFlex"}>
                     <Col xs={12} sm={6} md={6} lg={6} className={"adjustRow"}>
                         <h4>
-                            {props.userDetails ? "Edit user" : "Add User"}
+                            {/* props.userDetails ? "Edit user" : "Add User" */}
+                            Add User
                         </h4>
                     </Col>
                     <Col xs={12} sm={6} md={6} lg={6} className={"adjustRow textAlignRight"}>
@@ -73,6 +74,17 @@ function Profile(props) {
                     </Col>
                 </Col>
                 <Row>
+                    <Col xs={12} sm={6} md={3} lg={3} className={" "}>
+                        <div className="form-group">
+                            <label>Name</label>
+                            <span className={"mty"}>&nbsp;*</span>
+                            <Inputbox type="text" id="name" 
+                                value={state.name} onChange={onChange} 
+                                className="form-control" placeholder="Name" 
+                                error={state.failure.name || ""}
+                            />
+                        </div>
+                    </Col>
                     <Col xs={12} sm={6} md={3} lg={3} className={" "}>
                         <div className="form-group">
                             <label>User Name</label>
@@ -90,7 +102,7 @@ function Profile(props) {
                             <span className={"mty"}>&nbsp;*</span>
                             <Inputbox type="text" id="email" 
                                 value={state.email} onChange={onChange} 
-                                className="form-control" placeholder="User name" 
+                                className="form-control" placeholder="Email" 
                                 error={state.failure.email || ""}
                             />
                         </div>
@@ -101,7 +113,7 @@ function Profile(props) {
                             <span className={"mty"}>&nbsp;*</span>
                             <Inputbox type="text" id="mobile" 
                                 value={state.mobile} onChange={onChange} 
-                                className="form-control" placeholder="User name" 
+                                className="form-control" placeholder="Mobile" 
                                 error={state.failure.mobile || ""}
                             />
                         </div>
@@ -120,21 +132,11 @@ function Profile(props) {
                     </Col>
                     <Col xs={12} sm={6} md={3} lg={3} className={" "}>
                         <div className="form-group">
-                            <label>Address 1</label>
-                            <Inputbox type="text" id="address1" 
-                                value={state.address1} onChange={onChange} 
-                                className="form-control" placeholder="Address 1" 
-                                error={state.failure.address1 || ""}
-                            />
-                        </div>
-                    </Col>
-                    <Col xs={12} sm={6} md={3} lg={3} className={" "}>
-                        <div className="form-group">
-                            <label>Address 2</label>
-                            <Inputbox type="text" id="address2" 
-                                value={state.address2} onChange={onChange} 
-                                className="form-control" placeholder="Address 1" 
-                                error={state.failure.address2 || ""}
+                            <label>Pincode</label>
+                            <Inputbox type="text" id="pincode" 
+                                value={state.pincode} onChange={onChange} 
+                                className="form-control" placeholder="Pincode" 
+                                error={state.failure.pincode || ""}
                             />
                         </div>
                     </Col>

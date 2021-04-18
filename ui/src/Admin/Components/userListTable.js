@@ -4,6 +4,7 @@ import * as DashboardAction from '../../Action/DashboardAction'
 import Pagination from '@material-ui/lab/Pagination';
 import {Edit,DeleteForever} from '@material-ui/icons';
 import "../style/products.scss"
+import ModalComp from "../../Common/modal"
 
 import { Container, Col, Row, Tabs, Tab, Table } from 'react-bootstrap';
 
@@ -12,9 +13,8 @@ import React, { useState,useEffect } from 'react';
 function ViewProduct(props) {
     
   const [state,setState] = useState({
-    uname:"",
-    pass:"",
-    tab:0
+    confirmationModal:false,
+    modalLoading:false,
   })
 
   const onChange=(e)=>{
@@ -27,31 +27,31 @@ function ViewProduct(props) {
     //props.getProductList()
   }, []);
 
-  const handleChange = (event, value) => {
-    console.log( value)
-  };
 
 
   const userRemove=(id)=>{
+      setState({
+        ...state,
+        selectedId:id,
+        modalContent:"Do you really want to remove this user?",
+        confirmationModal:true
+      })
+    }
+  const userRemoveConfirmation=()=>{
     setState({
       ...state,
-      removeAlert:"User remove request initiated..."
+      modalLoading:true
     })
-    props.userRemoveAct(id)
+    props.userRemoveAct(state.selectedId)
     .then((res)=>{
           setState({
             ...state,
-            removeAlert:"User removed successfully."
+            modalLoading:false,
+            confirmationModal:false
           })
-          setTimeout(()=>(
-            setState({
-              ...state,
-              removeAlert:""
-            })
-          ), 5000)
         })
-    
-}
+    }
+
     return (
         <>
         <Col xs={12} sm={12} md={12} lg={12} className={" adjustRow"}>
@@ -63,12 +63,12 @@ function ViewProduct(props) {
             <Table striped bordered hover size="sm">
                 <thead>
                     <tr>
-                    <th>Name</th>
+                    <th>UserName</th>
                     <th>Email</th>
+                    <th>Name</th>
                     <th>Mobile</th>
                     <th>Gender</th>
-                    <th>Address</th>
-                    <th>Status</th>
+                    <th>Pincode</th>
                     <th style={{width:"6%"}}>#</th>
                     </tr>
                 </thead>
@@ -77,14 +77,14 @@ function ViewProduct(props) {
                     return <tr key={i}>
                               <td>{data.userName || ""}</td>
                               <td>{data.email || ""}</td>
+                              <td>{data.name || ""}</td>
                               <td>{data.mobile || ""}</td>
                               <td>{data.gender || ""}</td>
-                              <td>{data.address1 + (data.address2 && data.address1 ? ", " : "")+ data.address2}</td>
-                              <td>Pending</td>
+                              <td>{data.pincode || ""}</td>
                               <td>
                                   &nbsp;
                                 <Edit fontSize="small"
-                                  onClick={()=>props.history.push("/EditUser/"+data._id)} 
+                                  onClick={()=>props.history.push("/Profile/"+data._id)}
                                   />
                                 <div className={"floatRight"}>
                                   <DeleteForever fontSize="small"
@@ -98,18 +98,35 @@ function ViewProduct(props) {
                 }) }
                 </tbody>
             </Table>
-                <Col xs={12} sm={12} md={12} lg={12} className={" adjustRow"}>
+               {/*  <Col xs={12} sm={12} md={12} lg={12} className={" adjustRow"}>
                     <Pagination className={"floatRight"} count={10} onChange={handleChange} />
-                </Col>
+                </Col> */}
             </Col>
-
-            {state.removeAlert ? 
+                
+            <ModalComp
+                size={"sm"}
+                title={"Are you sure?"}
+                closeText={"No"}
+                close={()=>setState({...state,confirmationModal:false})}
+                submitText={"Yes"}
+                submitLoading={state.modalLoading}
+                submit={userRemoveConfirmation}
+                component={
+                  <Row>
+                      <Col xs={12} sm={12} md={12} lg={12} className={" "}>
+                          {state.modalContent}
+                      </Col>
+                  </Row>
+                }
+                show={state.confirmationModal}
+            />
+            {/* state.removeAlert ? 
               <div className={"CustomAlert"}>
                   {state.removeAlert} 
                   <span onClick={()=>setState({...state,removeAlert:""})}>&times;</span>
               </div>
             :""  
-            }
+             */}
       </>
     );
   }

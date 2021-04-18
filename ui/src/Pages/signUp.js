@@ -13,17 +13,20 @@ function SignUP(props) {
         failure:"",
         userName:"",
         gender:"",
-        address1:"",
-        address2:"",
+        pincode:"",
         mobile:"",
+        name:"",
         email:""
       })
       
   const onChange=(e)=>{
     let id = e.target.id
     const re = /^[0-9\b]+$/;
-    if(id === "mobile"){
-        if(re.test(e.target.value) || e.target.value===""){
+    if((id === "pincode" && e.target.value.length > 6) || (id === "mobile" && e.target.value.length > 10)){
+      return false
+    }
+    if(id === "mobile" || (id === "pincode" && e.target.value && e.target.value.length < 7)){
+        if(re.test(e.target.value) || e.target.value==="" ){
              setState({
                   ...state,
                   [e.target.id]:e.target.value 
@@ -62,6 +65,19 @@ function SignUP(props) {
                   <h3 className={"textAlignCenter"}>Sign up</h3>
 
                   <div className="form-group">
+                      <label>Name</label>
+                      <input type="text" id="name" onChange={onChange} 
+                          className={"form-control"+(state.failure.name ?" error ":"")} 
+                          placeholder="Enter full name" 
+                      />
+                      {state.failure.email ? 
+                        <label className={"labelError"}>
+                          {state.failure.email}
+                        </label> : 
+                      ""}
+                  </div>
+
+                  <div className="form-group">
                       <label>Email</label>
                       <input type="email" id="email" onChange={onChange} 
                           className={"form-control"+(state.failure.email ?" error ":"")} 
@@ -90,6 +106,7 @@ function SignUP(props) {
                   <div className="form-group">
                       <label>Mobile</label>
                       <input type="text" id="mobile" onChange={onChange} 
+                          value={state.mobile}
                           className={"form-control"+(state.failure.mobile ?" error ":"")} 
                           placeholder="Enter mobile number" 
                       />
@@ -110,14 +127,18 @@ function SignUP(props) {
                   </div>
 
                   <div className="form-group">
-                      <label>Address 1</label>
-                      <input type="text" id="address1" onChange={onChange} className="form-control" placeholder="Address line 1" />
+                      <label>Pincode</label>
+                      <input type="text" id="pincode" onChange={onChange} 
+                        value={state.pincode}
+                        className={"form-control"+(state.failure.pincode ?" error ":"")}  
+                        placeholder="Pincode" />
+                        {state.failure.pincode ? 
+                          <label className={"labelError"}>
+                            {state.failure.pincode}
+                          </label> : 
+                        ""}
                   </div>
 
-                  <div className="form-group">
-                      <label>Address 2</label>
-                      <input type="text" id="address2" onChange={onChange} className="form-control" placeholder="Address line 2" />
-                  </div>
                   <Button primary loading={state.loading}
                      onClick={signup}
                      className={"btn btn-dark btn-lg btn-block "} 

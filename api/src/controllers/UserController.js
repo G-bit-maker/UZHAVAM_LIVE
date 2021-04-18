@@ -3,6 +3,8 @@ const config = require("../config");
 const productModel = require("../models/productModel");
 const userModel = require("../models/RegisterModel");
 const message = require("../Common/constants");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 var TeleSignSDK = require('telesignsdk');
 const handleErrors = (err) =>{
     let error_msg = {}
@@ -273,14 +275,15 @@ exports.updateCart = async (req, res, next) => {
 
 exports.updateProfileDetails = async (req, res, next) => {
     try {
-        let {userName, mobile,email,dob,gender,address1,address2} = req.body;
+        let {name,userName, mobile,email,dob,gender,pincode} = req.body;
         const { id } = req.user;
         if(id){
-            let List = {userName, mobile,email,dob,gender,address1,address2};
+            let List = {name,userName, mobile,email,dob,gender,pincode};
             userModel.findOneAndUpdate({_id : id},List)
             .then(function(data){
                 res.status(200).json({
-                    success:"User edited Successfully"
+                    success:"User edited Successfully",
+                    data
                 })     
              })
              .catch(function (error) {
@@ -402,14 +405,16 @@ exports.ordersSave = async (req, res, next) => {
             let saveData = {
                 userId:id,
                 products:List.products,
-                addressId:body.addressId
+                addressId:body.addressId,
+                status:"Pending"
             }
            let orderPlaced = await productModel.orders(saveData).save();
            if(orderPlaced){
                 productModel.userCart.findOneAndDelete({_id:List._id})
                 .then(function(data){
                     res.status(200).json({
-                        success:"order placed Successfully"
+                        success:"order placed Successfully",
+                        orderId:data._id
                     })    
                 }).catch(function (error) {
                     res.status(200).json({
@@ -443,49 +448,35 @@ exports.getOrders = async (req, res, next) => {
             {
                 "$match": { "userId": id }
             },
+            {
+                $unwind: '$products'
+            },
             { "$addFields": { "addressId": { "$toObjectId": "$addressId" }}},
             { 
                 "$lookup": { 
                     "from": 'userAddress', 
                      "localField": 'addressId', 
-                    "foreignField": "_id",  
-                    //"let": { "_id": "addressId" },
+                    "foreignField": "_id",
                     "as": 'Address' 
                 } 
             },
-
-            { "$addFields": { "productList": "$products"}},
-            {"$map":{
-                "input":{
-                    "$filter": {
-                      "input": "$productList",
-                      "as": "hobbyf",
-                      "cond": "$$hobbyf.productId"
-                    }
-                  },
-                  "as": "hobbym",
-                  /* "in": {
-                    "name": "$$hobbym.count"
-                  } */
-            }},
-           
-            /* {
-                "pipeline":[
-                    {
-                        $match: {
-                          "$expr": {
-                            $eq: [
-                              "$_id",
-                              "$$child_id"
-                            ]
-                          }
-                        }
-                      }
-                ]
-            } */
+            { "$addFields": { "productId": { "$toObjectId": "$products.productId" }}},
+            {
+                $lookup: {
+                    from: 'productDetails',
+                    localField: 'productId',
+                    foreignField: '_id',
+                    as: 'productsDetails'
+                }
+            },
+             { "$addFields": { "productsDetails.count": "$products.count"}}, 
+             { "$addFields": { "product": "$productsDetails"}},
+             { $unwind: '$productsDetails' },
+             { $unwind: '$Address' },
+             { "$group": {
+                "_id": {orderStatus:"$status",orderId:"$_id",address:"$Address",user:"$User"},products:{$addToSet : "$productsDetails"},
+              }},
         ])
-
-        console.log(orders)
         return res.status(200).json({
             orders
         });
@@ -501,54 +492,90 @@ exports.getOrders = async (req, res, next) => {
 };
 
 
-exports.getOrdersById = async (req, res, next) => {
+exports.getOrderById = async (req, res, next) => {
     try {
         const { id } = req.user;
-        let orders = await productModel.orders.findOne({userId:id});
-        
-        let productId = orders.products.map(item=>item.productId);
-
-        let productsList = await productModel.product.find().where('_id').in(productId).exec();
-        let productsListDetails =  productsList;
-         if(orders.products && orders.products.length !== 0){
-            orders.products.map((data)=>{
-                let i = productsListDetails.findIndex(x=>x._id == data.productId);
-                if(i !== -1 ){
-                    productsListDetails[i].count = data.count;
+        const { orderId } = req.body;
+        let orders = await productModel.orders.aggregate([
+            {
+                "$match": {"_id":ObjectId(orderId)}
+            },
+            {
+                $unwind: '$products'
+            },
+            { "$addFields": { "addressId": { "$toObjectId": "$addressId" }}},
+            { "$addFields": { "userId": { "$toObjectId": "$userId" }}},
+            { 
+                "$lookup": { 
+                    "from": 'userAddress', 
+                     "localField": 'addressId', 
+                    "foreignField": "_id",
+                    "as": 'Address' 
+                } 
+            },
+            { "$addFields": { "productId": { "$toObjectId": "$products.productId" }}},
+            {
+                $lookup: {
+                    from: 'productDetails',
+                    localField: 'productId',
+                    foreignField: '_id',
+                    as: 'productsDetails'
                 }
-            });
-            if(productsListDetails && productsListDetails.length !== 0){
+            },
+            { 
+                "$lookup": { 
+                    "from": 'userRegistration', 
+                     "localField": 'userId', 
+                    "foreignField": "_id",
+                    "as": 'User' 
+                } 
+            },
+             { "$addFields": { "productsDetails.count": "$products.count"}}, 
+             { "$addFields": { "product": "$productsDetails"}},
+             { $unwind: '$productsDetails' },
+             { $unwind: '$Address' },
+              { "$group": {
+                "_id": {orderStatus:"$status",orderId:"$_id",address:"$Address",user:"$User"},products:{$addToSet : "$productsDetails"},
+              }},
+        ])
+        return res.status(200).json({
+            orders
+        });
+    } catch (err) {
+        return res.status(500).json({
+            failure:{
+                message:err
+            }
+        });
+    }
+};
+
+exports.getUserById = async (req, res, next) => {
+    try {
+        const { id } = req.user;
+        if(id){
+            let details = await userModel.findOne({"_id":id});
+            let address = await productModel.userAddress.find({userId:id})
+            if(details){
                 res.status(200).json({
-                    orders:productsListDetails
-                })  
+                    userDetails:{
+                        profile:details,
+                        address
+                    }
+                    });
             }else{
                 res.status(200).json({
-                    orders:[]
-                }) 
-            }
-        } 
-        
-        /* if(id){
-            productModel.orders.find()
-            .then(function(data){
-                    res.status(200).json({
-                        List:data
-                    })    
-                }).catch(function (error) {
-                res.status(200).json({
-                    failure: "No data found"
+                    message:"No user are available"
                 });
-            });
+            }
         }else{
             return res.status(500).json({
                 message:message.Token_Invalid
             });    
-        } */
+        }
     } catch (err) {
         return res.status(500).json({
-            failure:{
-                message:"something went wrong"
-            }
+            message:"No lists are available"
         });
     }
 };

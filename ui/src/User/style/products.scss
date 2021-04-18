@@ -6,7 +6,7 @@
     flex-wrap: wrap;
     display: flex;
     padding:15px;
-    margin: 10px 0;
+    //@at-root: 10px 0;
     .proName{
         font-size: 18px;
         margin-top: 20px;
@@ -21,7 +21,8 @@
     }
     .img{
         max-width: 100%;
-        height: 100%;
+        height: auto;
+        max-height: 100%;
     }
     .Addbtn{
         margin: 10px;
@@ -31,12 +32,25 @@
         width: 100%;
         outline: none;
     }
+    .proweight{
+        color: #666;
+    }
     .proPrice1{
         color: #666;
         text-decoration: line-through;
     }
     .proPrice{
-        font-size: 23px;
+        b{
+            font-size: 23px;
+        }
+        span{
+            text-decoration: line-through;
+        }
+        
+        .pActive{
+            text-decoration: none;
+            font-size: 23px;
+        }
     }
     .rateUserCount{
         position: absolute;
@@ -71,6 +85,9 @@
 
 
 @media only screen and (max-width: 480px) {
+    .proCon{
+        border-bottom: 1px solid #eee;
+    }
     .proCon .proName{
         margin-top: 0;
     }

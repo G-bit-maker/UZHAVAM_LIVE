@@ -4,6 +4,8 @@ const LoginModel = require("../models/adminloginModel");
 const productModel = require("../models/productModel");
 const userModel = require("../models/RegisterModel");
 const message = require("../Common/constants");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 const handleErrors = (err) =>{
     let error_msg = {}
     Object.values(err.errors).forEach(({properties})=>{
@@ -267,13 +269,14 @@ exports.updateUserDetails = async (req, res, next) => {
     try {
         let {id} = req.user;
         if(id){
-            let {userId,userName, mobile,email,dob,gender,address1,address2} = req.body;
+            let {name,userId,userName, mobile,email,dob,gender,pincode} = req.body;
 
-            let List = {userName, mobile,email,dob,gender,address1,address2};
+            let List = {name,userName, mobile,email,dob,gender,pincode};
             userModel.findOneAndUpdate({_id : userId},List)
             .then(function(data){
                 res.status(200).json({
-                    success:"User edited Successfully"
+                    success:"User edited Successfully",
+                    data
                 })     
              })
              .catch(function (error) {
@@ -298,11 +301,12 @@ exports.deleteUser = async (req, res, next) => {
     try {
         const { id } = req.user;
         if(id){
-            const {userId} = req.body;
-            userModel.findOneAndDelete({"_id":userId})
+            const {userId} = req.query;
+            userModel.findOneAndDelete({"_id":ObjectId(userId)})
             .then(function(data){
                 res.status(200).json({
-                    success:"User deleted Successfully"
+                    success:"User deleted Successfully",
+                    
                 })     
              })
              .catch(function(error){
@@ -327,16 +331,78 @@ exports.deleteUser = async (req, res, next) => {
 
 exports.getUsersOrders = async (req, res, next) => {
     try {
+        //const { id } = req.user;
+        let orders = await productModel.orders.aggregate([
+            { "$addFields": { "userId": { "$toObjectId": "$userId" }}},
+            { 
+                "$lookup": { 
+                    "from": 'userRegistration', 
+                     "localField": 'userId', 
+                    "foreignField": "_id",
+                    "as": 'User' 
+                } 
+            },
+            {
+                $unwind: '$products'
+            },
+            { "$addFields": { "addressId": { "$toObjectId": "$addressId" }}},
+            { 
+                "$lookup": { 
+                    "from": 'userAddress', 
+                     "localField": 'addressId', 
+                    "foreignField": "_id",
+                    "as": 'Address' 
+                } 
+            },
+            { "$addFields": { "productId": { "$toObjectId": "$products.productId" }}},
+            {
+                $lookup: {
+                    from: 'productDetails',
+                    localField: 'productId',
+                    foreignField: '_id',
+                    as: 'productsDetails'
+                }
+            },
+             { "$addFields": { "productsDetails.count": "$products.count"}}, 
+             { "$addFields": { "product": "$productsDetails"}},
+             { $unwind: '$productsDetails' },
+             { $unwind: '$Address' },
+             { $unwind: '$User' },
+             { "$group": {
+                "_id": {orderStatus:"$status",orderId:"$_id",address:"$Address",user:"$User"},products:{$addToSet : "$productsDetails"},
+              }},
+        ])
+        return res.status(200).json({
+            orders
+        });
+        
+        
+    } catch (err) {
+        return res.status(500).json({
+            failure:{
+                message:err
+            }
+        });
+    }
+};
+
+exports.getUserById = async (req, res, next) => {
+    try {
         const { id } = req.user;
+        const {userId} = req.body;
         if(id){
-            let details = await productModel.userCart.find();
-            if(details && details.length !== 0){
+            let details = await userModel.findOne({"_id":userId});
+            let address = await productModel.userAddress.find({userId})
+            if(details){
                 res.status(200).json({
-                    list:details
-                });
+                    userDetails:{
+                        profile:details,
+                        address
+                    }
+                    });
             }else{
                 res.status(200).json({
-                    message:"No lists are available"
+                    message:"No user are available"
                 });
             }
         }else{
@@ -347,6 +413,97 @@ exports.getUsersOrders = async (req, res, next) => {
     } catch (err) {
         return res.status(500).json({
             message:"No lists are available"
+        });
+    }
+};
+
+exports.updateOrderStatus = async (req, res, next) => {
+    try {
+        let {id} = req.user;
+        if(id){
+            let {orderId,status} = req.body;
+            productModel.orders.findOneAndUpdate({_id : orderId},{ $set:{status:status}},{new: true})
+            .then(function(data){
+                res.status(200).json({
+                    success:"User edited Successfully",
+                    data
+                })
+             })
+             .catch(function (error) {
+                res.status(200).json({
+                    failure: handleErrors(error)
+                });
+            });
+        }else{
+            return res.status(500).json({
+                message:message.Token_Invalid
+            });    
+        }
+    } catch (err) {
+        return res.status(500).json({
+            failure:{
+                message:"something went wrong"
+            }
+        });
+    }
+};
+
+
+exports.getOrderById = async (req, res, next) => {
+    try {
+        const { id } = req.user;
+        const { orderId } = req.query;
+        let orders = await productModel.orders.aggregate([
+            {
+                "$match": {"_id":ObjectId(orderId)}
+            },
+            {
+                $unwind: '$products'
+            },
+            { "$addFields": { "addressId": { "$toObjectId": "$addressId" }}},
+            { "$addFields": { "userId": { "$toObjectId": "$userId" }}},
+            { 
+                "$lookup": { 
+                    "from": 'userAddress', 
+                     "localField": 'addressId', 
+                    "foreignField": "_id",
+                    "as": 'Address' 
+                } 
+            },
+            { 
+                "$lookup": { 
+                    "from": 'userRegistration', 
+                     "localField": 'userId', 
+                    "foreignField": "_id",
+                    "as": 'User' 
+                } 
+            },
+            { "$addFields": { "productId": { "$toObjectId": "$products.productId" }}},
+            {
+                $lookup: {
+                    from: 'productDetails',
+                    localField: 'productId',
+                    foreignField: '_id',
+                    as: 'productsDetails'
+                }
+            },
+             { "$addFields": { "productsDetails.count": "$products.count"}}, 
+             { "$addFields": { "product": "$productsDetails"}},
+             { $unwind: '$productsDetails' },
+             { $unwind: '$Address' },
+             { $unwind: '$User' },
+              { "$group": {
+                "_id": {orderStatus:"$status",orderId:"$_id",address:"$Address",user:"$User"},products:{$addToSet : "$productsDetails"},
+              }},
+        ])
+        return res.status(200).json({
+            orders
+        });
+    } catch (err) {
+        return res.status(500).json({
+            failure:{
+                message:err
+            }
         });
     }
 };

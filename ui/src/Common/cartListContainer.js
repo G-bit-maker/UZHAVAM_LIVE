@@ -10,7 +10,7 @@ import Badge from '@material-ui/core/Badge';
 import Popover from '@material-ui/core/Popover';
 
 import CloseIcon from '@material-ui/icons/Close';
-import userimage from "../Image/product.png"
+import userimage from "../Image/product1.jpg"
 import "./common.scss"
 
 function Header(props) {
@@ -53,8 +53,8 @@ function Header(props) {
                         props.cartProductList.map((data,i)=>(
                             <Col xs={12} sm={12} md={12} lg={12} className={"CartList2"}>
                             <Row>
-                                <Col xs={3} sm={3} md={3} lg={3}>
-                                    <img height="50px" src={userimage}/>
+                                <Col xs={3} sm={3} md={3} lg={3} className={"cartImgCon"} /* style={{height:"60px",position:"relative"}} */>
+                                    <img className={"cartImg"} src={data.main_img || userimage}/>
                                 </Col>
                                 <Col xs={6} sm={6} md={6} lg={7} className={"adjustRow"}>
                                     <div className={"proName"}>{data.productName}</div>

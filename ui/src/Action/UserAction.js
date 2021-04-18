@@ -45,6 +45,56 @@ export function getAddressList(){
     } 
 }
 
+export function getOrderList(userType){
+    return function(dispatch){
+        UserApi.getOrderListApi(userType)
+        .then((res)=>{
+            dispatch({type:"GET_ORDER_LIST",payload:res})
+            return res
+        })
+    } 
+}
+
+export function getProfileDetail(id){
+    return function(dispatch){
+        UserApi.getProfileDetailApi(id)
+        .then((res)=>{
+            dispatch({type:"GET_PROFILE_DETAIL",payload:res.userDetails || ""})
+            return res
+        })
+    } 
+}
+
+export function onProfileDetailsSave(data){
+    return function(dispatch){
+        return UserApi.onProfileDetailsSaveApi(data)
+        .then((res)=>{
+            dispatch({type:"GET_PROFILE_DETAIL",payload:{profile:data}})
+            return res
+        })
+    } 
+}
+
+export function orderStatusChange(status){
+    return function(dispatch){
+        return UserApi.orderStatusChangeApi(status)
+        .then((res)=>{
+            dispatch({type:"CHANGE_ORDER_STATUS",payload:status})
+            return res
+        })
+    } 
+}
+
+export function getOrderById(id,userType){
+    return function(dispatch){
+        return UserApi.getOrderByIdApi(id,userType)
+         .then((res)=>{
+            //dispatch({type:"GET_ORDER_LIST",payload:res})
+            return res
+        }) 
+    } 
+}
+
 export function getProductList(id){
     return function(dispatch){
         UserApi.getProductListApi(id)
@@ -73,9 +123,9 @@ export function getProductList(id){
     } 
 }
 
-export function cartUpdate(id,c){
+export function cartUpdate(id,c,price){
     return function(dispatch){
-        UserApi.cartUpdateApi(id,c)
+        UserApi.cartUpdateApi(id,c,price)
         .then((res)=>{
             //dispatch({type:"UPDATE_USER_CART",payload:res,id,c})
             //if(c==0){

@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const {Registration} = require('../controllers/RegisterController');
-const {getProducts,login,updateCart,getCartProducts,getAddress,addressSave,updateProfileDetails,ordersSave,getOrders} = require('../controllers/UserController');
+const {getProducts,login,updateCart,getCartProducts,getAddress,addressSave,updateProfileDetails,ordersSave,getOrders,
+    getOrderById,getUserById} = require('../controllers/UserController');
 const auth = require("../Common/auth");
 
 //SignUp
@@ -32,7 +33,12 @@ router.route("/updateProfileDetails").put(auth,updateProfileDetails);
 router.route("/placeOrder").post(auth,ordersSave);
 
 //get order history
-
 router.route("/getOrderHistory").get(auth,getOrders);
+
+//get order details
+router.route("/getOrderById").get(auth,getOrderById);
+
+//get user details
+router.route("/getUserById").get(auth,getUserById)
 
 module.exports = router;

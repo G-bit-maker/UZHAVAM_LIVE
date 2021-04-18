@@ -52,9 +52,9 @@ export function addProductDetails(data){
     return function(dispatch){
         return DashboardApi.addProductApi(data)
         .then((res)=>{
-            if(res.success){
+            /* if(res.success){
                alert("Product added successfully")
-            }
+            } */
             return res
         })
     } 
@@ -65,7 +65,6 @@ export function productRemove(id){
         .then((res)=>{
             if(res.success){
                 dispatch(getProductList())
-               alert("Product removed successfully")
             }
             return res
         })

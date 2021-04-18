@@ -213,6 +213,9 @@ let orderSchema = mongoose.Schema({
     addressId:{
         type: String,
         required:[true]
+    },
+    status:{
+        type: String,
     }
 });
 

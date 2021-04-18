@@ -24,6 +24,10 @@ import AddUser from './Admin/addUser'
 import reportWebVitals from './reportWebVitals';
 
 import session from "./session"
+import Thankyou from './User/Thankyou';
+import profile from './User/profile';
+import OrderListForAdmin from './Admin/OrderListForAdmin';
+import excelImport from './Admin/excelImport';
 
 const LoginRoute =()=>{
   const jwt = session.getCookie("TOKEN")
@@ -56,15 +60,19 @@ ReactDOM.render(
       {/*  <Route exact path="/profile" component={Profile} />  */}
        <Route exact path="/User/Dashboard" component={UserDashboard} /> 
        <Route exact path="/Dashboard" component={Dashboard} /> 
+       <Route exact path="/Profile/:id" component={profile} /> 
        <Route exact path="/ViewProduct" component={ViewProducts} /> 
+       <Route exact path="/ViewOrders" component={OrderListForAdmin} />  
        <Route exact path="/EditProduct/:id" component={AddProduct} /> 
        <Route exact path="/AddProduct" component={AddProduct} /> 
+       <Route exact path="/ExcelSheetImport" component={excelImport} /> 
        <Route exact path="/AddUser" component={AddUser} /> 
        <Route exact path="/EditUser/:id" component={AddUser} /> 
        <Route exact path="/Attributes" component={UpdateTags} /> 
        <Route exact path="/ViewUser" component={Users} /> 
        <Route exact path="/Orders" component={OrderList} /> 
-       <Route exact path="/OrderDetail" component={OrderDetail} /> 
+       <Route exact path="/OrderDetail/:id" component={OrderDetail} /> 
+       <Route exact path="/Thankyou/:id" component={Thankyou} /> 
        <Route exact path="/Cart" component={CartPage} /> 
        <Route exact path="/Checkout" component={Checkout} /> 
        </Switch>

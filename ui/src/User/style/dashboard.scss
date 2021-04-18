@@ -1,4 +1,6 @@
-
+.width100{
+    width: 100%;
+}
 .pname{
     font-size: 35px;
     margin-bottom: 5px;
@@ -57,6 +59,10 @@
     height: 100%;
     overflow-y: auto;
 }
+.categoryCon{
+    display: flex;
+    overflow-x: auto;
+}
 
 .userList{
     .Imagecon{
@@ -92,3 +98,48 @@
         margin-right: 17px;
     }
 }
+
+
+.cartBar{
+    cursor: pointer;
+    min-width: 25%;
+    background: #666;
+    color: #fff;
+    padding: 15px 20px;
+    position: fixed;
+    bottom: 0;
+    right: 40px;
+    margin-bottom: 3%;
+    margin-left: 0%;
+    border-radius: 8px;
+    svg{
+        float: right;
+    }
+    h5{
+        margin-bottom: 0;
+    }
+    span{
+        float: right;
+        font-size: 20px;
+        cursor: pointer;
+        font-weight: 700;
+        line-height: 1;
+    }
+}
+.cartBar:hover{
+    background-color: rgb(32, 32, 32);
+}
+
+
+
+@media only screen and (max-width: 480px) {
+    .cartBar{
+        bottom: 0;
+        right: 0;
+        left: 0;
+        margin-bottom: 0;
+        margin-left: 0%;
+        border-radius: 0;
+        background-color: rgb(32, 32, 32);
+    }
+  }

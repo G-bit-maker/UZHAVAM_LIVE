@@ -15,12 +15,31 @@ export default function userReducer(state,action){
         case "GET_CART_DETAILS":
             return {
                 ...state,
-                cartProductList:action.payload.list ? action.payload.list : []
+                cartProductList:action.payload.list ? action.payload.list : [],
+                at:Math.random()
             }
         case "GET_ADDRESS_LIST":
             return {
                 ...state,
                 addressList:action.payload.list ? action.payload.list : []
+            }
+        case "GET_ORDER_LIST":
+            return {
+                ...state,
+                orderList:action.payload.orders ? action.payload.orders : []
+            }
+        case "GET_PROFILE_DETAIL":
+            return {
+                ...state,
+                profileDetails:action.payload.profile ? action.payload.profile : ""
+            }
+        case "CHANGE_ORDER_STATUS":
+            let orderList = state.orderList
+            orderList.find(x=>x._id.orderId === action.payload.orderId ? x.orderStatus = action.payload.status : "")
+            return {
+                ...state,
+                orderList:orderList || [],
+                at:Math.random()
             }
         case "GET_USER_PRODUCT_LIST":
             return {

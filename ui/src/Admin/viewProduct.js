@@ -10,6 +10,7 @@ import UserList from "./userList"
 import Header from "../Common/header"
 import SubHeader from "../Common/subHeader"
 import {Edit,DeleteForever} from '@material-ui/icons';
+import ModalComp from "../Common/modal"
 
 import { Container, Col, Row, Tabs, Tab, Table } from 'react-bootstrap';
 
@@ -37,20 +38,23 @@ function ViewProduct(props) {
   const productRemove=(id)=>{
       setState({
         ...state,
-        removeAlert:"Product remove request initiated..."
-      })
+        modalContent:"Do you want remove this product?",
+        confirmationModal:true
+      })      
+  }
+  const productRemoveConfirmation=(id)=>{
+    setState({
+      ...state,
+      modalLoading:true,
+      confirmationModal:true
+    })      
       props.productRemove(id)
       .then((res)=>{
-            setState({
-              ...state,
-              removeAlert:"Product removed successfully."
-            })
-            setTimeout(()=>(
-              setState({
-                ...state,
-                removeAlert:""
-              })
-            ), 5000)
+        setState({
+          ...state,
+          modalLoading:false,
+          confirmationModal:false
+        })      
           })
       
   }
@@ -111,13 +115,31 @@ function ViewProduct(props) {
                 </tbody>
             </Table>
             </Col>
-            {state.removeAlert ? 
+             
+            <ModalComp
+                size={"sm"}
+                title={"Are you sure?"}
+                closeText={"No"}
+                close={()=>setState({...state,confirmationModal:false})}
+                submitText={"Yes"}
+                submitLoading={state.modalLoading}
+                submit={productRemoveConfirmation}
+                component={
+                  <Row>
+                      <Col xs={12} sm={12} md={12} lg={12} className={" "}>
+                          {state.modalContent}
+                      </Col>
+                  </Row>
+                }
+                show={state.confirmationModal}
+            />
+            {/* state.removeAlert ? 
               <div className={"CustomAlert"}>
                   {state.removeAlert} 
                   <span onClick={()=>setState({...state,removeAlert:""})}>&times;</span>
               </div>
             :""  
-            }
+             */}
       </Container>
       </>
     );

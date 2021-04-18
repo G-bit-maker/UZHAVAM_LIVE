@@ -49,7 +49,7 @@ function Header(props) {
     return (
         <>
          <Navbar  fixed="top"  collapseOnSelect expand="lg" bg="dark" variant="dark">
-            <Navbar.Brand onClick={()=>props.history.push("/User/Dashboard")} href="#">Uzhalavam</Navbar.Brand>
+            <Navbar.Brand onClick={()=>props.history.push("/User/Dashboard")} href="#">Uzhavam</Navbar.Brand>
                 
                 {state.userType != "Admin" ? <div className={"mshow"}>
                       <Nav.Link className={"MobileCart"} eventKey={1} onClick={handleClick} variant="contained" aria-describedby={id}>
@@ -120,9 +120,16 @@ function Header(props) {
 
                         </div>
                       : ""}
-                  <Nav.Link eventKey={2} onClick={()=>props.history.push("/Orders")}>
-                    Orders
-                </Nav.Link>
+                    {state.userType != "Admin" ?
+                      <>
+                        <Nav.Link eventKey={2} onClick={()=>props.history.push("/Orders")}>
+                            Orders
+                        </Nav.Link> 
+                        <Nav.Link eventKey={2} onClick={()=>props.history.push("/Profile/MyProfile")}>
+                            Profile
+                        </Nav.Link> 
+                      </>
+                    : ""}
                   <Nav.Link eventKey={2} onClick={logoutAction}>
                     Logout
                 </Nav.Link>

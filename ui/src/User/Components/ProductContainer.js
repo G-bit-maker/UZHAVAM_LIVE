@@ -31,7 +31,8 @@ export default function MediaCard(props) {
       ...state,
       count:count
     })
-    props.cartUpdate(data._id,count)
+    let price = count < data.wholesale_quantity ? data.selling_price * count : data.special_price * count
+    props.cartUpdate(data._id,count,price)
   }
 
   let wwidth = window.innerWidth
@@ -52,17 +53,24 @@ export default function MediaCard(props) {
                   {/* <h5> */}{data.productName || ""}{/* </h5> */}
               </div>
               <div>
-                {data.discount_amount ?
-                  <span className={"proPrice1"}>&#x20B9;{data.discount_amount || ""}</span>  :""}
-                  {data.discount ? 
-                  <span className={"offer"}>&nbsp;&nbsp;&nbsp;{data.discount}% off</span> :""}
+                <span  className={"proweight "}>
+                    {(data.weight || "")+""+( data.wholesale_quantity || "")}
+                </span>
+                <span className={"floatRight"}>
+                  {data.mrp ?<><span>MRP</span>
+                    <span className={"proPrice1"}>&#x20B9;{data.mrp || ""}</span> </> :""}
+                    {data.selling_price && data.mrp ? 
+                    <span className={"offer"}>&nbsp;&nbsp;&nbsp;{((data.selling_price/data.mrp)*100).toFixed(0)}% off</span> :""}
+                </span>
               </div>
               <div className={"proPrice"}>
-                  &#x20B9;{data.mrp || ""}
+                  <span className={state.count < data.wholesale_quantity ? "pActive" :""}>&#x20B9;{data.selling_price || ""}</span><b>/</b>
+                  <span className={state.count >= data.wholesale_quantity ? "pActive" :""}>&#x20B9;{data.special_price || ""}</span>
+                  <label>&nbsp;&nbsp;( for min {data.wholesale_quantity} qty )</label>
               </div>
           
-                <Rating name="read-only" value={3.6} precision={0.1} readOnly size="small" /> 
-                <label className={"rateUserCount"}>&nbsp;3.6 (17k)</label>
+                {/* <Rating name="read-only" value={3.6} precision={0.1} readOnly size="small" /> 
+                <label className={"rateUserCount"}>&nbsp;3.6 (17k)</label> */}
                 
                 <Col xs={12} sm={12} md={12} lg={12} className={"adjustRow addCartbtn floatRight"}>
                   {/* <div>Add</div> */}

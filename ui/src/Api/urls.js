@@ -8,6 +8,7 @@ const urls={
     placeOrder:"/user/placeOrder",
 
     //admin
+    orderStatus:"/admin/updateOrderStatus",
     addEditUser:"/admin/updateUserDetails",
     adminLogin:"/admin/login",
     getCategory:"/admin/getCategories",
@@ -18,6 +19,24 @@ const urls={
     getUserList:"/admin/getUserList",
     getUserDetails:"/admin/getUserList",
     userRemove:"/admin/deleteUser",
+
+    //both
+    getOrderList:{
+        User:"/user/getOrderHistory",
+        Admin:"/admin/getUsersOrder"
+    },
+    getProfileDetails:{
+        User:"/user/getUserById",
+        Admin:"/admin/getUserById"
+    },
+    profileDetailSave:{
+        User:"/user/updateProfileDetails",
+        Admin:"/admin/updateUserDetails"
+    },
+    getOrderById:{
+        User:"/user/getOrderById",
+        Admin:"/admin/getOrderById"
+    },
 }
 
 export default urls

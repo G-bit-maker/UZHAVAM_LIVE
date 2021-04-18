@@ -95,7 +95,7 @@
 
 .cartListCon{
     position: relative;
-    min-width: 300px;
+    width: 300px;
     .CartList{
         height: 400px;
         overflow-y: auto;
@@ -112,6 +112,13 @@
         }
         .close{
             padding-top: 5px;
+        }
+        
+        .cartImg{
+            //position: absolute;
+            width: 100%;
+            height: auto;
+            margin-top: 10px;
         }
     }
     .cartfooter{

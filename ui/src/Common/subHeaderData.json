@@ -43,6 +43,11 @@
               "url":"/ViewUser"
             }
           ]
+        },
+        {
+          "id":"order",
+          "name":"Order",
+          "url":"/ViewOrders"
         }
       ],
       "User":[

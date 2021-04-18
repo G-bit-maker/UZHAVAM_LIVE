@@ -39,8 +39,8 @@ function AddProduct(props) {
         maxSaleQty:"",
         IsStock:"No",
         mrp:"",
-        sellingPrice:"",
-        specialPrice:"",
+        retailPrice:"",
+        wholeSalePrice:"",
         discount:"",
         discountAmt:"",
         status:"Active",
@@ -75,11 +75,11 @@ function AddProduct(props) {
         setState({
             ...state,
             [e.target.id]:e.target.value,
-            discountAmt:(state2.mrp - state2.specialPrice),
+            discountAmt:(state2.mrp - state2.wholeSalePrice),
             cgstp:(state2.taxClassId / 2),
             sgstp:(state2.taxClassId / 2),
-            cgstamt:(state2.sellingPrice * state2.cgstp),
-            sgstamt:(state2.sellingPrice * state2.sgstp)
+            cgstamt:(state2.retailPrice * state2.cgstp),
+            sgstamt:(state2.retailPrice * state2.sgstp)
         })
     }
     const onChange=(e)=>{
@@ -89,9 +89,9 @@ function AddProduct(props) {
 
             if(
                 id === "mrp" ||
-                id === "specialPrice" ||
+                id === "wholeSalePrice" ||
                 id === "taxClassId" ||
-                id === "sellingPrice" /* ||
+                id === "retailPrice" /* ||
                 id === "cgstp" ||
                 id === "sgstp"  */
             ){
@@ -149,8 +149,8 @@ function AddProduct(props) {
                 maxSaleQty:details.max_sale_quantity || "",
                 IsStock:details.stock || "No",
                 mrp:details.mrp || "",
-                sellingPrice:details.selling_price || "",
-                specialPrice:details.special_price || "",
+                retailPrice:details.selling_price || "",
+                wholeSalePrice:details.special_price || "",
                 discount:details.discount || "",
                 discountAmt:details.discount_amount || "",
                 status:details.status || "Active",
@@ -255,7 +255,7 @@ function AddProduct(props) {
                     <div className="form-group">
                         <label>SKU</label>
                         <span className={"mty"}>&nbsp;*</span>
-                        <Inputbox type="text" id="sku" value={state.sku} 
+                        <Inputbox type="text" id="sku" value={state.sku}  disabled={state.sku? true : false}
                             onChange={onChange} className="form-control" placeholder="SKU" 
                             error={state.failure.SKU || ""}
                         />
@@ -366,7 +366,7 @@ function AddProduct(props) {
                     <div className="form-group">
                         <label>Retail Price</label>
                         <span className={"mty"}>&nbsp;*</span>
-                        <Inputbox type="text" id="sellingPrice" value={state.sellingPrice} 
+                        <Inputbox type="text" id="retailPrice" value={state.retailPrice} 
                             onChange={onChange} className="form-control" placeholder="Selling price" 
                             error={state.failure.selling_price || ""}
                             onlyNumber
@@ -377,7 +377,7 @@ function AddProduct(props) {
                     <div className="form-group">
                         <label>Wholesale Price</label>
                         <span className={"mty"}>&nbsp;*</span>
-                        <Inputbox type="text" id="specialPrice" value={state.specialPrice} 
+                        <Inputbox type="text" id="wholeSalePrice" value={state.wholeSalePrice} 
                             onChange={onChange} className="form-control" placeholder="Special price" 
                             error={state.failure.special_price || ""}
                             onlyNumber

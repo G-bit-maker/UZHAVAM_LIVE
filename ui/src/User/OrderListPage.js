@@ -28,26 +28,21 @@ function Profile(props) {
     productCategory:"All"
   })
 
-  const onChange=(e)=>{
-    setState({
-        ...state,
-        [e.target.id]:e.target.value
-      })
-  }
-  const selectCategory=(e)=>{
-    props.getProductList(e.target.value)
-  }
-
 
   useEffect(() => {
-      console.log(window.innerWidth)
-    props.getCartDetails()
+    props.getOrderList("User")
   }, []);
-  const tagActive =(data)=>{
-    console.log(data)
+
+  const getTotal=(arr,type)=>{
+    let Total = 0
+    arr.map(data=>{
+      console.log(data.selling_price , data.count,data.weight)
+      Total += (type == "amount" ? (data.selling_price * data.count) : type == "qty" ? parseInt(data.count) : parseInt(data.weight))
+    })
+    console.log(Total)
+    return Total
   }
 
-  let temp =[1,2,3,4]
     return (
         <>
       <Header {...props} />
@@ -58,7 +53,7 @@ function Profile(props) {
             <Col xs={12} sm={12} md={12} lg={12} className={" "}>
               <Col xs={12} sm={12} md={12} lg={12} className={"adjustRow "}>
                 <h2>
-                  Your orders ({props.cartProductList.length || 0})
+                  Your orders ({props.orderList.length || 0})
                 </h2>
               </Col>
             </Col>
@@ -84,54 +79,26 @@ function Profile(props) {
                                     
                                 </Col>
                         </Row> */}
-                        { temp ? temp.map((data,i)=>( 
+                        { props.orderList ? props.orderList.map((data,i)=>( 
                                  <Row className={"orderCon conPad"}>
                                         <Col xs={4} sm={12} md={12} lg={6} className={" "}>
                                             <Col xs={4} sm={12} md={12} lg={12} className={" "}>
                                                 <Row>
-                                                    <Col xs={4} sm={12} md={12} lg={2} className={"orderImg "}>
-                                                        <img width="100%" src={userimage} />
-                                                    </Col>
                                                     <Col xs={4} sm={12} md={12} lg={7} className={"orderName "}>
-                                                        <h5>{"Product Name"}</h5> 
-                                                        <h6>2 x &#x20B9;195.00</h6> 
-                                                    </Col>
-                                                    <Col xs={4} sm={12} md={12} lg={3} className={" textAlignRight"}>
-                                                        <br />
-                                                        <h6>&#x20B9;390.00</h6> 
-                                                    </Col>
-                                                </Row>
-                                                <Row>
-                                                    <Col xs={4} sm={12} md={12} lg={2} className={"orderImg "}>
-                                                        <img width="100%" src={userimage} />
-                                                    </Col>
-                                                    <Col xs={4} sm={12} md={12} lg={7} className={"orderName "}>
-                                                        <h5>{"Product Name"}</h5> 
-                                                        <h6>2 x &#x20B9;195.00</h6> 
-                                                    </Col>
-                                                    <Col xs={4} sm={12} md={12} lg={3} className={" textAlignRight"}>
-                                                        <br />
-                                                        <h6>&#x20B9;390.00</h6> 
+                                                        <h4>Total Amount &#x20B9;{getTotal(data.products,"amount")}</h4> 
+                                                        <h6>Total qty {getTotal(data.products,"qty")}</h6> 
+                                                        <h6>Total weight {getTotal(data.products,"weight")}</h6> 
                                                     </Col>
                                                 </Row>
                                             </Col>
                                         </Col>
                                         <Col sm={12} md={12} lg={6} className={"textAlignRight borderLeft"}>
-                                            <h6><a href="#" onClick={()=>props.history.push("/OrderDetail")}>ORDER ID # 5TRG45TTW4SERT45345</a></h6> 
-                                            <h6>14 October 2020 </h6> 
-                                            <h6>Total: &#x20B9;699.99 </h6> 
-                                            <h6>PENDING</h6> 
-                                            <h6><a href="#">Cancel order </a></h6>
+                                            <h6><a href="#" onClick={()=>props.history.push("/OrderDetail/"+data._id.orderId)}>ORDER ID # {data._id.orderId.toUpperCase()}</a></h6> 
+                                            <h6>14 October 2020 </h6>
+                                            <h6>{data._id.orderStatus === "Pending" ? "PENDING" : data._id.orderStatus.toUpperCase()+"ED" }</h6> 
+                                            { data._id.orderStatus === "Pending" ? <h6><a href="#">Cancel order </a></h6> : ""}
+                                            
                                         </Col>
-                                        {/* <Col sm={12} md={12} lg={2} className={"textAlignRight "}>
-                                            <h6>To</h6> 
-                                            <address>
-                                                <div>Candidate name,</div>
-                                                <div>42/a street street,</div>
-                                                <div>chennai,</div>
-                                                <div>Tamilnadu 611105</div>
-                                            </address>
-                                        </Col> */}
                                         
                                 </Row>
                          )):
@@ -153,7 +120,7 @@ function Profile(props) {
 
 const mapStateToProps = (state /*, ownProps*/) => {
   return {
-    cartProductList: state.userReducer.cartProductList ? state.userReducer.cartProductList : [],
+    orderList: state.userReducer.orderList ? state.userReducer.orderList : [],
   }
 }
 

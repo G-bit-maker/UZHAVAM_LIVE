@@ -30,7 +30,7 @@ export default function cartProductList(props) {
     <>
             <Row className={"listCon conPad"}>
                     <Col xs={4} sm={12} md={12} lg={2} className={" "}>
-                        <img width="100%" src={userimage} />
+                        <img width="100%" src={data.main_img || userimage} />
                     </Col>
                     <Col sm={12} md={12} lg={4} className={" mhide"}>
                         <h5>{data.productName}</h5> Sku:{data.SKU}

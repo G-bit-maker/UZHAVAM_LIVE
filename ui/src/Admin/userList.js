@@ -60,50 +60,6 @@ function Profile(props) {
                 <Row>
                   {props.userList && props.userList.length != 0 ? <UserTable {...props} list={props.userList} /> : 
                   <h3 className="m10">No user found..</h3>}
-                  
-                {/* {props.userList && props.userList.length != 0 ? props.userList.map(data=>{
-                      return <Col xs={12} sm={3} md={3} lg={12} className={" userCon"}>
-                                    <div className={"borderBottom "}>
-                                        <Row>
-                                            <Col xs={12} sm={3} md={3} lg={2} className={""}>
-                                                    <div className="Imagecon">
-                                                        <img src={userimage} />
-                                                    </div>
-                                            </Col>
-                                            <Col xs={12} sm={3} md={3} lg={10} className={"adjustRow"}>
-                                                    <div className="detail ">
-                                                        <div>
-                                                            <span className="useName">
-                                                                {data.userName}
-                                                            </span>
-                                                        <span className={"floatRight procreated"}>
-                                                            {data.gender || ""}
-                                                        </span>
-                                                        </div>
-                                                        <div className="">
-                                                        <span>
-                                                            {data.email || ""}
-                                                        </span>
-                                                        </div>
-                                                        <div className="">
-                                                        <span>
-                                                            {data.mobile || ""}
-                                                        </span>
-                                                        </div>
-                                                        <div className="">
-                                                        <span>
-                                                            {data.address1 || ""}
-                                                            {data.address1 && data.address2 ? ", ":""}
-                                                            {data.address2 || ""}
-                                                        </span>
-                                                        </div>
-                                                    </div>
-                                                    
-                                            </Col>
-                                        </Row>
-                                    </div>
-                                </Col>
-                }):<h3 className="m10">No user found..</h3>} */}
                 </Row>
                 </Col>
                 

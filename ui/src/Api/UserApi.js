@@ -9,15 +9,34 @@ class UserApi{
     static getAddressListApi(){
         return axios.get(urls.getAddressList)
     }   
+    static getOrderListApi(userType){
+        return axios.get(urls.getOrderList[userType])
+    }   
+    static getProfileDetailApi(id){
+        return axios.get(urls.getProfileDetails[id ? "Admin" : "User"],{params:{userId:id}})
+    }   
+    static orderStatusChangeApi(data){
+        return axios.put(urls.orderStatus,qs.stringify(
+            data
+        ))
+    }   
+    static onProfileDetailsSaveApi(data){
+        return axios.put(urls.profileDetailSave[data.userId ? "Admin" : "User"],qs.stringify(
+            data
+        ))
+    }   
+    static getOrderByIdApi(id,userType){
+        return axios.get(urls.getOrderById[userType],{params:{orderId:id}})
+    }   
     static getCategoryApi(data){
         return axios.get(urls.getCategoryForUser)
     }   
     static getProductListApi(id){
         return axios.get(urls.getProductForUser,{params:{id:id}})
     }   
-    static cartUpdateApi(id,i){
+    static cartUpdateApi(id,i,price){
         return axios.post(urls.updateCart ,qs.stringify({
-            productId:id,count:i
+            productId:id,count:i,price
         }) )
     }   
     static addressSaveApi(data){

@@ -68,7 +68,7 @@ function Profile(props) {
                         <h4>Where would you like us to deliver?</h4>
                     </Col>
                     <Col xs={12} sm={12} md={12} lg={12} className={" "}>
-                        <AddressList />
+                        <AddressList select={true}/>
                     </Col>
             </Col>
             {/* <Col xs={12} sm={8} md={9} lg={4} className={" mhide"}>

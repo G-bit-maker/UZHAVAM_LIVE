@@ -18,11 +18,8 @@ let registerSchema = mongoose.Schema({
     gender: {
         type: String
     },
-    address1: {
-        type: String
-    },
-    address2: {
-        type: String
+    pincode:{
+        type:String
     }
 
 });

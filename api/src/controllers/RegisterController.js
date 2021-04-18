@@ -39,17 +39,23 @@ exports.Registration = async (req, res, next) => {
         }
         client.sms.message(messageCallback, phoneNumber, message, messageType);
  */
-        const { userName, mobile,email,dob,gender,address1,address2} = req.body;
+        const {name, userName, mobile,email,dob,gender,pincode} = req.body;
         let List = {};
+        List.name = name;
         List.userName = userName;
         List.mobile = mobile;
         List.email = email;
         List.dob = dob;
         List.gender = gender;
-        List.address1 = address1;
-        List.address2 = address2;
+        List.pincode = pincode;
         let userDetails = new registerModel(List);
-        userDetails.save()
+        let users =  await registerModel.findOne({userName});
+        if(users !== null){
+            res.status(200).json({
+                failure: {userName:"User name already taken"}
+            });
+        }else{
+            userDetails.save()
             .then(function (data) {
                 let token = jwt.sign({ id: data._id }, config.secret, {
                     expiresIn: 86400 // expires in 24 hours
@@ -66,6 +72,8 @@ exports.Registration = async (req, res, next) => {
                     failure: handleErrors(error)
                 });
             });
+        }
+        
     } catch (err) {
         return res.status(500).json({
             failure: "Invalid Details"

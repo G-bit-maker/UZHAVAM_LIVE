@@ -38,18 +38,33 @@ function Profile(props) {
       console.log("onSubmit")
     if(props.submitText === "PLACE ORDER"){
         let id = props.addressList.findIndex(x=>x.selected===true)
-        console.log(props.addressList[id]._id)
+        console.log(props.addressList[id])
         console.log(id)
-        props.placeOrder(props.addressList[id]._id)
-        .then((res)=>{
-            alert("ORDER PLACED")
-        })
+        if(props.addressList[id]){
+            props.placeOrder(props.addressList[id]._id)
+            .then((res)=>{
+                alert("ORDER PLACED")
+            })
+        }else{
+            setState({
+                ...state,
+                removeAlert:"Please select address"
+            })
+             setTimeout(()=>(
+                setState({
+                ...state,
+                removeAlert:""
+                })
+            ), 2000) 
+        }
+        
+        
     }else{
         props.history.push("/Checkout")
     }
   }
 
-    return (
+    return (<>
             <Col xs={12} sm={8} md={9} lg={12} className={" totalCon"}>
                 <Row className={"priceRow"}>
                     <Col xs={6} sm={8} md={9} lg={7} className={" textAlignRight"}>
@@ -157,6 +172,14 @@ function Profile(props) {
                         
                     </Col>
             </Col>
+                    {state.removeAlert ? 
+                    <div className={"CustomAlert"}>
+                        {state.removeAlert} 
+                        <span onClick={()=>setState({...state,removeAlert:""})}>&times;</span>
+                    </div>
+                    :""  
+                    }
+                    </>
     );
   }
   

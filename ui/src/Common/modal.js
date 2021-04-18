@@ -1,6 +1,8 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+//import Button from '@material-ui/core/Button';
 import { Modal } from 'react-bootstrap';
+
+import Buttons from "../Common/button"
 
 import { useState,useEffect } from 'react';
 import "./common.scss"
@@ -11,6 +13,7 @@ export default function ModalComp(props) {
     <>
 
         <Modal
+            size={props.size || "md"}
             show={props.show}
             onHide={props.close}
             backdrop="static"
@@ -23,10 +26,24 @@ export default function ModalComp(props) {
                 {props.component}
             </Modal.Body>
             <Modal.Footer>
-            <Button variant="secondary" onClick={props.close}>
+                
+            {/* <Button variant="secondary" onClick={props.close}>
                 {props.closeText}
-            </Button>
-            <Button onClick={props.submit} variant="primary">{props.submitText}</Button>
+            </Button> */}
+
+            <Buttons 
+                     onClick={props.close}
+                     //className={"btn btn-dark btn-lg btn-block "} 
+                     text={props.closeText}
+                  />
+
+            
+            <Buttons primary loading={props.submitLoading}
+                     onClick={props.submit}
+                     //className={"btn btn-dark btn-lg btn-block "} 
+                     text={props.submitText}
+                  />
+            {/* <Button  variant="primary"></Button> */}
             </Modal.Footer>
         </Modal>
         </>
