@@ -49,7 +49,7 @@ function Header(props) {
     return (
         <>
          <Navbar  fixed="top"  collapseOnSelect expand="lg" bg="dark" variant="dark">
-            <Navbar.Brand onClick={()=>props.history.push("/User/Dashboard")} href="#">Uzhavam</Navbar.Brand>
+            <Navbar.Brand onClick={()=>props.history.push(state.userType === "Admin" ? "/Dashboard" : "/User/Dashboard")} href="#">Uzhavam</Navbar.Brand>
                 
                 {state.userType != "Admin" ? <div className={"mshow"}>
                       <Nav.Link className={"MobileCart"} eventKey={1} onClick={handleClick} variant="contained" aria-describedby={id}>

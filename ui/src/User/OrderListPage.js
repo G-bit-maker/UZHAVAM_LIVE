@@ -3,6 +3,7 @@ import { bindActionCreators } from "redux";
 import * as UserAction from '../Action/UserAction'
 import "./style/checkout.scss"
 import Header from "../Common/header"
+import ModalComp from "../Common/modal"
 import SubHeader from "../Common/subHeader"
 import CardMedia from '@material-ui/core/CardMedia';
 import {Edit,DeleteForever, RowingTwoTone} from '@material-ui/icons';
@@ -42,6 +43,33 @@ function Profile(props) {
     console.log(Total)
     return Total
   }
+
+  const onAction=(act,id)=>{
+      setState({
+        ...state,
+        confirmationModal:true,
+        modalContent:`Do you want to ${act} the order?`,
+        modalAction:act,
+        selectedId:id
+      })
+    }
+
+    const onActionSave=()=>{
+      setState({
+        ...state,
+        modalLoading:true
+      })
+      props.orderStatusChange({orderId:state.selectedId,status:state.modalAction})
+      .then((data)=>{
+        props.getOrderList("User")
+        setState({
+          ...state,
+          confirmationModal:false,
+          modalLoading:false
+        })
+      })
+    }
+
 
     return (
         <>
@@ -96,7 +124,7 @@ function Profile(props) {
                                             <h6><a href="#" onClick={()=>props.history.push("/OrderDetail/"+data._id.orderId)}>ORDER ID # {data._id.orderId.toUpperCase()}</a></h6> 
                                             <h6>14 October 2020 </h6>
                                             <h6>{data._id.orderStatus === "Pending" ? "PENDING" : data._id.orderStatus.toUpperCase()+"ED" }</h6> 
-                                            { data._id.orderStatus === "Pending" ? <h6><a href="#">Cancel order </a></h6> : ""}
+                                            { data._id.orderStatus === "Pending" ? <h6><a onClick={()=>onAction("Cancel",data._id.orderId)} href="#">Cancel order </a></h6> : ""}
                                             
                                         </Col>
                                         
@@ -111,6 +139,24 @@ function Profile(props) {
                     </Col>
             </Col>
         </Row>
+
+         <ModalComp
+                size={"sm"}
+                title={"Are you sure?"}
+                closeText={"No"}
+                close={()=>setState({...state,confirmationModal:false})}
+                submitText={"Yes"}
+                submitLoading={state.modalLoading}
+                submit={onActionSave}
+                component={
+                  <Row>
+                      <Col xs={12} sm={12} md={12} lg={12} className={" "}>
+                          {state.modalContent}
+                      </Col>
+                  </Row>
+                }
+                show={state.confirmationModal}
+            />
          
       </Container>
       </>

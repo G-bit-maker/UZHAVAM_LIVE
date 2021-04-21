@@ -89,7 +89,7 @@ export function getOrderById(id,userType){
     return function(dispatch){
         return UserApi.getOrderByIdApi(id,userType)
          .then((res)=>{
-            //dispatch({type:"GET_ORDER_LIST",payload:res})
+            dispatch({type:"GET_ORDER_DETAILS",payload:res})
             return res
         }) 
     } 

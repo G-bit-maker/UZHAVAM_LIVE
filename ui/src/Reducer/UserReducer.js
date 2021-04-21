@@ -28,6 +28,11 @@ export default function userReducer(state,action){
                 ...state,
                 orderList:action.payload.orders ? action.payload.orders : []
             }
+        case "GET_ORDER_DETAILS":
+            return {
+                ...state,
+                orderDetails:action.payload.orders ? action.payload.orders[0] : ""
+            }
         case "GET_PROFILE_DETAIL":
             return {
                 ...state,
